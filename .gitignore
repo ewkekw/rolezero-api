@@ -4,3 +4,8 @@ docs/
 target/
 .idea/
 *.iml
+
+# Autenticação e Credenciais Locais
+.env
+.env.*
+!.env.example
