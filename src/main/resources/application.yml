@@ -13,11 +13,11 @@ spring:
     virtual:
       enabled: true
 
-  # Banco de Dados Geoespacial
+  # Banco de Dados Geoespacial (Supabase)
   datasource:
-    url: jdbc:postgresql://localhost:5432/role0db
-    username: role0user
-    password: role0password
+    url: jdbc:postgresql://${DB_HOST:db.dwiufcdrwhbuqrrvlfyb.supabase.co}:${DB_PORT:5432}/${DB_NAME:postgres}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 50
