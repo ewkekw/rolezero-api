@@ -1,10 +1,16 @@
 # Role-Zero Backend Core
 
-![Java](https://img.shields.io/badge/Java-21-orange.svg)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.3-brightgreen.svg)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-PostGIS-blue.svg)
-![Architecture](https://img.shields.io/badge/Architecture-Hexagonal-blueviolet.svg)
-![Security](https://img.shields.io/badge/Security-Stateless_JWT-red.svg)
+<div align="center">
+  <img src="https://img.shields.io/badge/Java_21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 21" />
+  <img src="https://img.shields.io/badge/Spring_Boot_3.4.3-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot" />
+  <img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/PostGIS-Spatial-4169E1?style=for-the-badge&logo=qgis&logoColor=white" alt="PostGIS" />
+  <img src="https://img.shields.io/badge/Architecture-Hexagonal_(DDD)-8A2BE2?style=for-the-badge&logo=hexagon&logoColor=white" alt="Architecture" />
+  <img src="https://img.shields.io/badge/Security-Stateless_JWT-D22128?style=for-the-badge&logo=jsonwebtokens&logoColor=white" alt="Security" />
+  <img src="https://img.shields.io/badge/Render-Platform_CaaS-000000?style=for-the-badge&logo=render&logoColor=white" alt="Render Deploy" />
+</div>
+
+<br />
 
 > **"True connections happen offline."**
 
