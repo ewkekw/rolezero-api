@@ -20,8 +20,8 @@ spring:
     password: ${DB_PASS}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 50
-  
+      maximum-pool-size: 5 # Free tier Supabase maximo é ~15
+      minimum-idle: 1
   flyway:
     enabled: true
     baseline-on-migrate: true
