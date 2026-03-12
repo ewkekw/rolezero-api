@@ -16,4 +16,3 @@ application-dev.yml
 TestPg.*
 apache-maven-*/
 server_run.log
-render-mcp-*/
