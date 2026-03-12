@@ -25,7 +25,7 @@ class EventoTest {
             EventoDomainException.class,
             () -> evento.aprovarParticipante(UUID.randomUUID())
         );
-        assertEquals("Capacidade máxima do evento atingida.", exception.getMessage());
+        assertEquals("O evento não está aceitando novos participantes.", exception.getMessage());
     }
     
     @Test

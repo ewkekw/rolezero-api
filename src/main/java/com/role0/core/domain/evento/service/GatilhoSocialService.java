@@ -19,7 +19,7 @@ public class GatilhoSocialService {
         }
 
         // Acha a intersecção de VibeTags de todo mundo
-        Set<VibeTag> tagsEmComum = participantes.get(0).getVibeTags();
+        Set<VibeTag> tagsEmComum = new java.util.HashSet<>(participantes.get(0).getVibeTags());
         for (int i = 1; i < participantes.size(); i++) {
             tagsEmComum.retainAll(participantes.get(i).getVibeTags());
         }
