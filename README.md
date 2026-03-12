@@ -12,11 +12,16 @@
 
 <br />
 
-> **"True connections happen offline."**
+> **"Presence over Profile: Turning digital intent into physical urban movement."**
 
-Role-Zero is a B2C platform focused on hyper-locality and authentic spontaneous connections. The application enables users to create or request access to ephemeral private events (expiring within 24 hours) via a real-time geographical radar driven by PostGIS spatial capabilities.
+Role-Zero is not just an events platform; it is an infrastructure for the **Anti-Social Network** movement. In an era of digital saturation, Role-Zero leverages high-precision urban computing to coordinate spontaneous, hyper-local, and transient physical gatherings ("roles").
 
-This repository holds the **Core API (Backend)**, modeled entirely upon **Domain-Driven Design (DDD)** and **Hexagonal Architecture (Ports and Adapters)** to ensure extreme maintainability, testability, and technological agnosticism regarding business rules.
+### The Philosophy
+In Role-Zero, we believe that true human connection is ephemeral and rooted in physical proximity. This API acts as the orchestration layer for a world where:
+- **Presence is the only Metric**: No likes, no followers—only your physical presence at the Role.
+- **Ephemeral Infrastructure**: Event lifecycles are strict; they exist only while they happen.
+- **Urban Intelligence**: Leveraging PostGIS for spatial queries that treat the city as a living database.
+- **Hexagonal Integrity**: A technical manifesto that separates business truth from infrastructure, ensuring the project outlasts its frameworks.
 
 ---
 
