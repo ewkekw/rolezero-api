@@ -1,26 +1,19 @@
 # ---- Stage 1: Build ----
-# Usando JDK 21 Alpine para compilar a aplicação
-FROM eclipse-temurin:21-jdk-alpine AS builder
+# Usando a imagem oficial do Maven com JDK 21 Alpine para compilar a aplicação
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
 
 # Diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copia os arquivos de configuração do Maven e o Pom
-COPY .mvn/ .mvn/
-COPY mvnw ./
+# Copia apenas o Pom primeiro para baixar as dependências (otimiza cache)
 COPY pom.xml ./
-
-# Dá permissão de execução ao Maven Wrapper
-RUN chmod +x mvnw
-
-# Baixa as dependências offline (otimiza tempo de build nas execuções subsequentes)
-RUN ./mvnw dependency:go-offline
+RUN mvn dependency:go-offline
 
 # Copia o código fonte do sistema
 COPY src ./src
 
 # Executa o build (ignorando testes automatizados na nuvem para poupar RAM do servidor grátis)
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # ---- Stage 2: Runtime ----
 # Usando JRE 21 Alpine apenas para rodar (imagem extrememamente mais leve)
