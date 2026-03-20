@@ -25,6 +25,7 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
     }
 
     @Override
+    @SuppressWarnings("null")
     public Usuario salvar(Usuario usuario) {
         UsuarioJpaEntity entity = mapper.toJpaEntity(usuario);
         UsuarioJpaEntity saved = repository.save(entity);
@@ -32,9 +33,17 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
     }
 
     @Override
+    @SuppressWarnings("null")
     public Optional<Usuario> buscarPorId(UUID id) {
         return repository.findById(id).map(mapper::toDomain);
     }
+
+    @Override
+    @SuppressWarnings("null")
+    public Optional<Usuario> buscarPorEmail(String email) {
+        return repository.findByEmail(email).map(mapper::toDomain);
+    }
+
     @Override
     public Optional<Usuario> buscarMelhorSubstituto(java.util.List<UUID> candidatosId) {
         if (candidatosId == null || candidatosId.isEmpty()) {

@@ -88,6 +88,7 @@ class EventoBuscaControllerIT {
 
     @Test
     @DisplayName("Deve buscar evento detalhado e incluir previsão de tempo se disponível (HTTP 200)")
+    @SuppressWarnings("null")
     void deveBuscarComClima_Http200() throws Exception {
         PrevisaoClima climaMock = new PrevisaoClima(25.0, "Céu limpo", "01d");
         Mockito.when(weatherClient.getPrevisaoPorCoordenadas(coords.getLatitude(), coords.getLongitude()))
@@ -105,6 +106,7 @@ class EventoBuscaControllerIT {
 
     @Test
     @DisplayName("Deve buscar evento detalhado mesmo se previsão de tempo falhar/indisponivel (HTTP 200 via Fallback)")
+    @SuppressWarnings("null")
     void deveBuscarSemClimaFallback_Http200() throws Exception {
         Mockito.when(weatherClient.getPrevisaoPorCoordenadas(coords.getLatitude(), coords.getLongitude()))
                .thenReturn(Optional.empty());
@@ -119,6 +121,7 @@ class EventoBuscaControllerIT {
 
     @Test
     @DisplayName("Deve retonar HTTP 404 para evento inexistente")
+    @SuppressWarnings("null")
     void deveRetornarHttp404ParaEventoInexistente() throws Exception {
         UUID randomId = UUID.randomUUID();
         
@@ -131,6 +134,7 @@ class EventoBuscaControllerIT {
 
     @Test
     @DisplayName("Deve listar Meus Eventos")
+    @SuppressWarnings("null")
     void deveBuscarMeusEventos_Http200() throws Exception {
         MeuEventoResponse mockResp = new MeuEventoResponse(
                 eventoId, "Meu Evento Teste", LocalDateTime.now(), StatusEvento.ABERTO_PARA_VAGAS, true);

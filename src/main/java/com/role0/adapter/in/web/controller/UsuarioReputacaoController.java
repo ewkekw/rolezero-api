@@ -48,7 +48,9 @@ public class UsuarioReputacaoController {
     public ResponseEntity<PerfilReviewsResponse> listarAvaliacoes(
             @Parameter(description = "UUID do Usuário") @PathVariable UUID userId,
             @RequestParam(name = "limit", defaultValue = "20") int limit) {
-        return ResponseEntity.ok(buscarAvaliacoesUseCase.executar(userId, limit));
+        @SuppressWarnings("null")
+        PerfilReviewsResponse response = buscarAvaliacoesUseCase.executar(userId, limit);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(
@@ -61,9 +63,13 @@ public class UsuarioReputacaoController {
             @Valid @RequestBody AvaliarUsuarioRequest payload) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication.getPrincipal() == null) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        UUID avaliadorId = UUID.fromString((String) authentication.getPrincipal());
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UUID)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        UUID avaliadorId = (UUID) principal;
         avaliarUsuarioUseCase.executar(avaliadorId, userId, payload);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

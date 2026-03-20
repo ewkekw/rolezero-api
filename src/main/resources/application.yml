@@ -51,5 +51,12 @@ spring:
 app:
   security:
     jwt:
-      secret: "3f8e589A!2e5B876aD*74A4b1c2D3e4F5g6h7i8j9K0" # Apenas ambiente de mock local
-      expiration-ms: 86400000 # 24 horas
+      secret: "${JWT_SECRET:3f8e589A!2e5B876aD*74A4b1c2D3e4F5g6h7i8j9K0}"
+      expiration-ms: 86400000 
+  integrations:
+    openweather:
+      api-key: "${OPENWEATHER_API_KEY:dummy_key}"
+      base-url: "https://api.openweathermap.org/data/2.5"
+    nominatim:
+      base-url: "${NOMINATIM_BASE_URL:https://nominatim.openstreetmap.org}"
+      user-agent: "${NOMINATIM_USER_AGENT:Role0-Backend/1.0 (contact@role0.com)}"

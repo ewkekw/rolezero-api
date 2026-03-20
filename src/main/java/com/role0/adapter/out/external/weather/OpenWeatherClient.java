@@ -3,7 +3,6 @@ package com.role0.adapter.out.external.weather;
 import com.role0.core.application.port.out.WeatherServicePort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -19,9 +18,10 @@ public class OpenWeatherClient implements WeatherServicePort {
     private final String apiKey;
 
     public OpenWeatherClient(RestClient.Builder restClientBuilder, 
-                             @Value("${openweather.api.key:dummy}") String apiKey) {
-        this.restClient = restClientBuilder.baseUrl("https://api.openweathermap.org/data/2.5").build();
-        this.apiKey = apiKey;
+                             @org.springframework.beans.factory.annotation.Value("${app.integrations.openweather.base-url}") String baseUrl,
+                             @org.springframework.beans.factory.annotation.Value("${app.integrations.openweather.api-key}") String apiKey) {
+        this.restClient = restClientBuilder.baseUrl(java.util.Objects.requireNonNull(baseUrl)).build();
+        this.apiKey = java.util.Objects.requireNonNull(apiKey);
     }
 
     /**

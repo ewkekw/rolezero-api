@@ -35,6 +35,7 @@ public class BuscarAvaliacoesUsuarioService implements BuscarAvaliacoesUsuarioUs
     }
 
     @Override
+    @SuppressWarnings("null")
     public PerfilReviewsResponse executar(@NonNull UUID usuarioId, int limit) {
         int pageSize = Math.min(limit, 100);
 

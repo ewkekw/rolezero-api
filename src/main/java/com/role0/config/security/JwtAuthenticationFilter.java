@@ -47,13 +47,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
         if (jwtService.isTokenValid(jwt) && SecurityContextHolder.getContext().getAuthentication() == null) {
             
-            if (tokenBlacklistPort.isRevogado(jwt)) {
+            @SuppressWarnings("null")
+            boolean isRevogado = tokenBlacklistPort.isRevogado(jwt);
+            if (isRevogado) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
 
             // Re-hidratando SecurityContext puramente por JWT. Stateless puro.
-            String userId = jwtService.extractUserId(jwt);
+            String userIdStr = jwtService.extractUserId(jwt);
+            java.util.UUID userId = java.util.UUID.fromString(userIdStr);
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     userId, 
                     null, 

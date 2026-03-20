@@ -20,6 +20,9 @@ import com.role0.core.domain.evento.exception.EventoDomainException;
  * <p><strong>Consequência (Positiva):</strong> Nível corporativo de isolamento de testes e cumprimento da legislação local
  * para resposta a incidentes sem ofuscar as demais lógicas da agregação.</p>
  */
+import org.springframework.stereotype.Service;
+
+@Service
 public class AcionarBotaoPanicoService implements AcionarBotaoPanicoUseCase {
 
     private final EventoRepositoryPort eventoRepository;

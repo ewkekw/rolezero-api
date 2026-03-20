@@ -54,6 +54,7 @@ class ProcessarSolicitacaoServiceTest {
     private Evento eventoMock;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
 
         eventoId = UUID.randomUUID();

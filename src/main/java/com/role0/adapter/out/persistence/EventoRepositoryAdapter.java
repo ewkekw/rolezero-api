@@ -36,6 +36,7 @@ public class EventoRepositoryAdapter implements EventoRepositoryPort {
 
     @Override
     @CacheEvict(value = "eventosCache", allEntries = true)
+    @SuppressWarnings("null")
     public Evento salvar(Evento evento) {
         EventoJpaEntity entity = mapper.toJpaEntity(evento);
         EventoJpaEntity saved = repository.save(entity);
@@ -43,6 +44,7 @@ public class EventoRepositoryAdapter implements EventoRepositoryPort {
     }
 
     @Override
+    @SuppressWarnings("null")
     public Optional<Evento> buscarPorId(UUID id) {
         return repository.findById(id).map(mapper::toDomain);
     }

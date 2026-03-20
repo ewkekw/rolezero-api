@@ -9,6 +9,9 @@ import com.role0.core.domain.evento.exception.EventoDomainException;
 import com.role0.core.domain.evento.valueobject.SolicitacaoParticipacao;
 import com.role0.core.domain.evento.valueobject.StatusEvento;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class SolicitarParticipacaoService implements SolicitarParticipacaoUseCase {
 
     private final EventoRepositoryPort eventoRepository;

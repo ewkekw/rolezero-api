@@ -2,7 +2,6 @@ package com.role0.core.application.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
@@ -50,8 +49,9 @@ class BuscarPerfilUsuarioServiceTest {
         UUID id = UUID.randomUUID();
         when(queryPort.buscarPerfil(id)).thenReturn(Optional.empty());
 
-        assertThrows(UsuarioDomainException.class, () -> {
+        UsuarioDomainException ex = assertThrows(UsuarioDomainException.class, () -> {
             buscarPerfilUsuarioService.executar(id);
         });
+        org.junit.jupiter.api.Assertions.assertNotNull(ex);
     }
 }

@@ -16,6 +16,9 @@ import com.role0.core.domain.evento.entity.Evento;
 import com.role0.core.domain.evento.exception.EventoDomainException;
 import com.role0.core.domain.usuario.entity.Usuario;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class CancelarEventoService implements CancelarEventoUseCase {
 
     private final EventoRepositoryPort eventoRepository;

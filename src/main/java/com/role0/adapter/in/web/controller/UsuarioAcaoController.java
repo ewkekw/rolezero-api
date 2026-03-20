@@ -2,6 +2,7 @@ package com.role0.adapter.in.web.controller;
 
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -32,8 +33,15 @@ public class UsuarioAcaoController {
     @Operation(summary = "Atualizar Meu Perfil", description = "Permite que o usuário autenticado atualize informações mutáveis básicas do seu próprio perfil.")
     @PatchMapping("/me")
     public ResponseEntity<Void> atualizarMeuPerfil(@Valid @RequestBody AtualizarPerfilRequest request) {
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UUID usuarioAutenticadoId = UUID.fromString(principal);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UUID)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        UUID usuarioAutenticadoId = (UUID) principal;
 
         atualizarPerfilUseCase.executar(usuarioAutenticadoId, request.nomeDisplay());
 

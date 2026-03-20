@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface SpringDataUsuarioRepository extends JpaRepository<UsuarioJpaEntity, UUID> {
     
+    java.util.Optional<UsuarioJpaEntity> findByEmail(String email);
+
     @Query(value = "SELECT u.* FROM role_usuario u JOIN role_perfil_reputacao r ON u.id = r.usuario_id WHERE u.id IN :ids ORDER BY r.trust_score DESC LIMIT 1", nativeQuery = true)
     java.util.Optional<UsuarioJpaEntity> findBestSubstituteIn(@Param("ids") List<UUID> ids);
 }

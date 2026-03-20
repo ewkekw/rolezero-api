@@ -32,11 +32,16 @@ public class UsuarioQueryController {
     @Operation(summary = "Meu Perfil Completo", description = "Retorna os dados sensíveis do próprio usuário autenticado, incluindo e-mail.")
     @GetMapping("/me")
     public ResponseEntity<UsuarioPerfilResponse> buscarMeuPerfil() {
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UUID usuarioAutenticadoId = UUID.fromString(principal);
-
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(401).build();
+        }
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UUID)) {
+            return ResponseEntity.status(401).build();
+        }
+        UUID usuarioAutenticadoId = (UUID) principal;
         UsuarioPerfilResponse response = buscarPerfilUsuarioUseCase.executar(usuarioAutenticadoId);
-
         return ResponseEntity.ok(response);
     }
 

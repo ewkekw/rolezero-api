@@ -15,6 +15,9 @@ import com.role0.core.domain.evento.service.GatilhoSocialService;
 import com.role0.core.domain.evento.valueobject.StatusEvento;
 import com.role0.core.domain.usuario.entity.Usuario;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class ProcessarSolicitacaoService implements ProcessarSolicitacaoUseCase {
 
     private final EventoRepositoryPort eventoRepository;

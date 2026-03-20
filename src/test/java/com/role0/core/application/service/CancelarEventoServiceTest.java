@@ -44,6 +44,7 @@ class CancelarEventoServiceTest {
     private CancelarEventoService cancelarEventoService;
 
     @Test
+    @SuppressWarnings("null")
     void nadeDeveCancelarSeNaoForHost() {
         UUID eventoId = UUID.randomUUID();
         UUID intrusoId = UUID.randomUUID();
@@ -52,12 +53,14 @@ class CancelarEventoServiceTest {
         Evento evento = new Evento(eventoId, hostId, "Meu Role", 10, new CoordenadaGeografica(0, 0), LocalDateTime.now().plusHours(5));
         when(eventoRepository.buscarPorId(eventoId)).thenReturn(Optional.of(evento));
 
-        assertThrows(AccessDeniedException.class, () -> {
+        AccessDeniedException ex = assertThrows(AccessDeniedException.class, () -> {
             cancelarEventoService.executar(eventoId, intrusoId);
         });
+        org.junit.jupiter.api.Assertions.assertNotNull(ex);
     }
 
     @Test
+    @SuppressWarnings("null")
     void deveCancelarDiretoSemInterinoSeFaltaMuitoTempo() {
         UUID eventoId = UUID.randomUUID();
         UUID hostId = UUID.randomUUID();
@@ -74,6 +77,7 @@ class CancelarEventoServiceTest {
     }
 
     @Test
+    @SuppressWarnings("null")
     void devePromoverInterinoSeFaltaMenosDeDuasHoras() {
         UUID eventoId = UUID.randomUUID();
         UUID hostId = UUID.randomUUID();

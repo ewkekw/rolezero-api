@@ -20,6 +20,9 @@ import org.slf4j.LoggerFactory;
  * <p><strong>Decisão:</strong> Subimos isso por uma fila Delayed Exchange gerada via MessageBrokerPort no momento do Match, 
  * cuja exaustão (consumo final) ativa nativamente este Use Case "EncerrarEvento".</p>
  */
+import org.springframework.stereotype.Service;
+
+@Service
 public class EncerrarEventoService implements EncerrarEventoUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(EncerrarEventoService.class);

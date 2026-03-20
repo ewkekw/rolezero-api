@@ -8,6 +8,9 @@ import com.role0.core.domain.evento.entity.Evento;
 import com.role0.core.domain.evento.exception.EventoDomainException;
 import com.role0.core.domain.evento.valueobject.StatusEvento;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class AvaliarParticipantesService implements AvaliarParticipantesUseCase {
 
     private final EventoRepositoryPort eventoRepository;

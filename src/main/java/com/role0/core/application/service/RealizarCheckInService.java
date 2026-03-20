@@ -8,6 +8,9 @@ import com.role0.core.domain.evento.entity.Evento;
 import com.role0.core.domain.evento.exception.EventoDomainException;
 import com.role0.core.domain.evento.valueobject.CoordenadaGeografica;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class RealizarCheckInService implements RealizarCheckInUseCase {
 
     private final EventoRepositoryPort eventoRepository;

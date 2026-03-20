@@ -23,6 +23,7 @@ class GatilhoSocialServiceTest {
     private Evento eventoMock;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         gatilhoSocialService = new GatilhoSocialService();
         eventoMock = new Evento(

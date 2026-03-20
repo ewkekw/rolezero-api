@@ -1,15 +1,21 @@
 package com.role0.config.security;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.role0.config.AppIntegrationsProperties;
+
 @Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties(AppIntegrationsProperties.class)
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -29,19 +35,26 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
+                    "/api/v1/auth/register",
+                    "/api/v1/auth/login",
+                    "/api/v1/auth/sso",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/swagger-resources/**",
                     "/webjars/**"
-                ).permitAll() // Libera Swagger UI e OpenAPI Docs completamente
-                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/events/**").permitAll() // Rota Pública (Testes Frictionless)
-                .requestMatchers("/api/v1/auth/**").permitAll() // Rota de Onboarding e Login Livres
-                .anyRequest().authenticated() // Qualquer outra requisição, como POST /events, precisa de token
+                ).permitAll() // Libera Swagger UI e endpoints públicos de auth
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/events/**").permitAll()
+                .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

@@ -40,6 +40,7 @@ public class BuscarHistoricoChatService implements BuscarHistoricoChatUseCase {
     }
 
     @Override
+    @SuppressWarnings("null")
     public List<MensagemChatResponse> executar(@NonNull UUID eventoId, @NonNull UUID solicitanteId, int limit) {
         Evento evento = eventoRepository.buscarPorId(eventoId)
                 .orElseThrow(() -> new EventoNaoEncontradoException(eventoId.toString()));

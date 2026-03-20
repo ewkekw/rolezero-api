@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.role0.adapter.in.web.dto.request.CheckInRequest;
 import com.role0.adapter.in.web.dto.request.CriarEventoRequest;
+import com.role0.adapter.in.web.dto.request.AtualizarEventoRequest;
 import com.role0.core.application.usecase.AcionarBotaoPanicoUseCase;
 import com.role0.core.application.usecase.AtualizarEventoUseCase;
 import com.role0.core.application.usecase.CancelarEventoUseCase;
 import com.role0.core.application.usecase.CriarEventoUseCase;
 import com.role0.core.application.usecase.RealizarCheckInUseCase;
 import com.role0.core.domain.evento.valueobject.CoordenadaGeografica;
+import com.role0.core.application.dto.AtualizarEventoCommand;
 
 import jakarta.validation.Valid;
 
@@ -66,8 +68,15 @@ public class EventoAcaoController {
     })
     @PostMapping
     public ResponseEntity<Void> criar(@Valid @RequestBody CriarEventoRequest request) {
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UUID hostIdAutenticado = UUID.fromString(principal);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UUID)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        UUID hostIdAutenticado = (UUID) principal;
 
         CoordenadaGeografica localizacao = new CoordenadaGeografica(request.latitude(), request.longitude());
         criarEventoUseCase.executar(
@@ -87,8 +96,15 @@ public class EventoAcaoController {
     public ResponseEntity<Void> efetuarCheckIn(
             @Parameter(description = "UUID do Evento", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6") @PathVariable UUID id, 
             @Valid @RequestBody CheckInRequest request) {
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UUID userAutenticado = UUID.fromString(principal);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UUID)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        UUID userAutenticado = (UUID) principal;
         realizarCheckInUseCase.executar(id, userAutenticado,
                 new CoordenadaGeografica(request.latitude(), request.longitude()));
         return ResponseEntity.noContent().build();
@@ -103,8 +119,15 @@ public class EventoAcaoController {
     @PostMapping("/{id}/panic")
     public ResponseEntity<Void> acionarEmergencia(
             @Parameter(description = "UUID do Evento reportado", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6") @PathVariable UUID id) {
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UUID reportadorAutenticado = UUID.fromString(principal);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UUID)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        UUID reportadorAutenticado = (UUID) principal;
 
         acionarBotaoPanicoUseCase.executar(id, reportadorAutenticado);
 
@@ -117,12 +140,19 @@ public class EventoAcaoController {
     @org.springframework.web.bind.annotation.PatchMapping("/{id}")
     public ResponseEntity<Void> atualizarEvento(
             @Parameter(description = "UUID do Evento", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6") @PathVariable UUID id,
-            @Valid @RequestBody com.role0.adapter.in.web.dto.request.AtualizarEventoRequest request) {
+            @Valid @RequestBody AtualizarEventoRequest request) {
         
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UUID userAutenticado = UUID.fromString(principal);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UUID)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        UUID userAutenticado = (UUID) principal;
 
-        com.role0.core.application.dto.AtualizarEventoCommand command = new com.role0.core.application.dto.AtualizarEventoCommand(
+        AtualizarEventoCommand command = new AtualizarEventoCommand(
                 request.titulo(),
                 request.descricao(),
                 request.maxCapacity()
@@ -137,8 +167,15 @@ public class EventoAcaoController {
     @org.springframework.web.bind.annotation.DeleteMapping("/{id}")
     public ResponseEntity<Void> cancelarEvento(
             @Parameter(description = "UUID do Evento a ser cancelado", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6") @PathVariable UUID id) {
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UUID hostIdAutenticado = UUID.fromString(principal);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UUID)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        UUID hostIdAutenticado = (UUID) principal;
 
         cancelarEventoUseCase.executar(id, hostIdAutenticado);
 

@@ -28,6 +28,7 @@ public class BuscarPerfilUsuarioQueryAdapter implements BuscarPerfilUsuarioQuery
     }
 
     @Override
+    @SuppressWarnings("null")
     public Optional<UsuarioPerfilResponse> buscarPerfil(UUID id) {
         Optional<UsuarioJpaEntity> usuarioOpt = usuarioRepository.findById(id);
         if (usuarioOpt.isEmpty()) {
@@ -40,17 +41,20 @@ public class BuscarPerfilUsuarioQueryAdapter implements BuscarPerfilUsuarioQuery
         }
         Optional<PerfilReputacaoJpaEntity> reputacaoOpt = reputacaoRepository.findByUsuarioId(id);
 
-        return Optional.of(new UsuarioPerfilResponse(
+        @SuppressWarnings("null")
+        UsuarioPerfilResponse response = new UsuarioPerfilResponse(
             usuario.getId(),
             usuario.getNome(),
             usuario.getEmail(),
             usuario.getTags().stream().map(Enum::name).collect(Collectors.toList()),
             usuario.isProvedIdentityToken(),
             reputacaoOpt.map(PerfilReputacaoJpaEntity::getCurrentScore).orElse(java.math.BigDecimal.ZERO)
-        ));
+        );
+        return Optional.of(response);
     }
 
     @Override
+    @SuppressWarnings("null")
     public Optional<UsuarioPublicoResponse> buscarPerfilPublico(@NonNull UUID id) {
         Optional<UsuarioJpaEntity> usuarioOpt = usuarioRepository.findById(id);
         if (usuarioOpt.isEmpty()) {
@@ -63,13 +67,15 @@ public class BuscarPerfilUsuarioQueryAdapter implements BuscarPerfilUsuarioQuery
         }
         Optional<PerfilReputacaoJpaEntity> reputacaoOpt = reputacaoRepository.findByUsuarioId(id);
 
-        return Optional.of(new UsuarioPublicoResponse(
+        @SuppressWarnings("null")
+        UsuarioPublicoResponse response = new UsuarioPublicoResponse(
             usuario.getId(),
             usuario.getNome(),
             usuario.getTags().stream().map(Enum::name).collect(Collectors.toList()),
             usuario.isProvedIdentityToken(),
             reputacaoOpt.map(PerfilReputacaoJpaEntity::getCurrentScore).orElse(java.math.BigDecimal.ZERO),
             reputacaoOpt.map(PerfilReputacaoJpaEntity::getTotalAvaliacoes).orElse(0)
-        ));
+        );
+        return Optional.of(response);
     }
 }

@@ -7,6 +7,9 @@ import com.role0.core.application.port.out.BuscarPerfilUsuarioQueryPort;
 import com.role0.core.application.usecase.BuscarPerfilUsuarioUseCase;
 import com.role0.core.domain.usuario.exception.UsuarioDomainException;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class BuscarPerfilUsuarioService implements BuscarPerfilUsuarioUseCase {
 
     private final BuscarPerfilUsuarioQueryPort queryPort;

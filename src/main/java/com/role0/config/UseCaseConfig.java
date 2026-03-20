@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.role0.core.application.port.out.ChatNotificationPort;
 import com.role0.core.application.port.out.EventoRepositoryPort;
+import com.role0.core.application.port.out.GeocodingServicePort;
 import com.role0.core.application.port.out.UsuarioRepositoryPort;
 import com.role0.core.application.port.out.MessageBrokerEventPort;
 import com.role0.core.application.service.CriarEventoService;
@@ -35,8 +36,9 @@ public class UseCaseConfig {
     @Bean
     public CriarEventoUseCase criarEventoUseCase(
             EventoRepositoryPort eventoRepository,
-            UsuarioRepositoryPort usuarioRepository) {
-        return new CriarEventoService(eventoRepository, usuarioRepository);
+            UsuarioRepositoryPort usuarioRepository,
+            GeocodingServicePort geocodingService) {
+        return new CriarEventoService(eventoRepository, usuarioRepository, geocodingService);
     }
 
     @Bean

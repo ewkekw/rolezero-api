@@ -38,6 +38,7 @@ class UsuarioQueryControllerIT {
 
     @Test
     @WithMockUser(username = "3fa85f64-5717-4562-b3fc-2c963f66afa6", roles = "USER")
+    @SuppressWarnings("null")
     void deveBuscarMeuPerfilCorretamenteUsandoJwtClaimMockada() throws Exception {
         UUID expectedId = UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6");
 
@@ -60,6 +61,7 @@ class UsuarioQueryControllerIT {
     }
 
     @Test
+    @SuppressWarnings("null")
     void deveBuscarPerfilPublicoCorretamente() throws Exception {
         UUID queryId = UUID.randomUUID();
 
@@ -77,6 +79,7 @@ class UsuarioQueryControllerIT {
     }
 
     @Test
+    @SuppressWarnings("null")
     void deveRetornar404QuandoPerfilPublicoNaoEncontrado() throws Exception {
         UUID queryId = UUID.randomUUID();
 

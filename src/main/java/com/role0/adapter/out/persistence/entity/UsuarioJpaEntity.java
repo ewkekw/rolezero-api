@@ -38,6 +38,9 @@ public class UsuarioJpaEntity {
     @Column(name = "biometria_validada", nullable = false)
     private boolean provedIdentityToken;
 
+    @Column(name = "password_hash")
+    private String passwordHash;
+
     // Getters / Setters omitted for brevity but they are necessary for Hibernate
     public UUID getId() {
         return id;
@@ -77,5 +80,13 @@ public class UsuarioJpaEntity {
 
     public void setProvedIdentityToken(boolean provedIdentityToken) {
         this.provedIdentityToken = provedIdentityToken;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }

@@ -7,6 +7,9 @@ import com.role0.core.application.usecase.AtualizarPerfilUseCase;
 import com.role0.core.domain.usuario.entity.Usuario;
 import com.role0.core.domain.usuario.exception.UsuarioDomainException;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class AtualizarPerfilService implements AtualizarPerfilUseCase {
 
     private final UsuarioRepositoryPort usuarioRepository;

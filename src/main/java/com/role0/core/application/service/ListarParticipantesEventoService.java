@@ -35,6 +35,7 @@ public class ListarParticipantesEventoService implements ListarParticipantesEven
     }
 
     @Override
+    @SuppressWarnings("null")
     public List<ParticipanteResumoResponse> executar(@NonNull UUID eventoId, @NonNull UUID solicitanteId) {
         Evento evento = eventoRepository.buscarPorId(eventoId)
                 .orElseThrow(() -> new EventoNaoEncontradoException(eventoId.toString()));
@@ -53,6 +54,7 @@ public class ListarParticipantesEventoService implements ListarParticipantesEven
                 .map(s -> {
                     Optional<UsuarioJpaEntity> usuarioOpt = usuarioRepository.findById(s.getUsuarioId());
                     String nome = usuarioOpt.map(UsuarioJpaEntity::getNome).orElse("Usuário");
+                    @SuppressWarnings("null")
                     List<String> vibes = usuarioOpt
                             .map(u -> u.getTags().stream().map(Enum::name).collect(Collectors.toList()))
                             .orElse(List.of());

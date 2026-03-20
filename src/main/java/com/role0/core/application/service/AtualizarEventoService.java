@@ -8,6 +8,9 @@ import com.role0.core.application.usecase.AtualizarEventoUseCase;
 import com.role0.core.domain.evento.entity.Evento;
 import com.role0.core.domain.evento.exception.EventoDomainException;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class AtualizarEventoService implements AtualizarEventoUseCase {
 
     private final EventoRepositoryPort eventoRepository;

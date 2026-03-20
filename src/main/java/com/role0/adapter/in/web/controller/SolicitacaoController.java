@@ -68,6 +68,7 @@ public class SolicitacaoController {
             @Valid @RequestBody JulgarSolicitacaoRequest payload) {
         // Extrai o ID do Host do Token JWT validado no SecurityContext
         String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        java.util.Objects.requireNonNull(principal, "Principal não pode ser nulo");
         UUID hostIdAutenticado = UUID.fromString(principal);
 
         if (Boolean.TRUE.equals(payload.aprovada())) {
@@ -87,7 +88,11 @@ public class SolicitacaoController {
         if (authentication == null || authentication.getPrincipal() == null) {
             return ResponseEntity.status(401).build();
         }
-        UUID hostId = UUID.fromString((String) authentication.getPrincipal());
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UUID)) {
+            return ResponseEntity.status(401).build();
+        }
+        UUID hostId = (UUID) principal;
         return ResponseEntity.ok(listarSolicitacoesUseCase.executar(id, hostId));
     }
 
@@ -99,7 +104,11 @@ public class SolicitacaoController {
         if (authentication == null || authentication.getPrincipal() == null) {
             return ResponseEntity.status(401).build();
         }
-        UUID solicitanteId = UUID.fromString((String) authentication.getPrincipal());
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof UUID)) {
+            return ResponseEntity.status(401).build();
+        }
+        UUID solicitanteId = (UUID) principal;
         return ResponseEntity.ok(listarParticipantesUseCase.executar(id, solicitanteId));
     }
 }

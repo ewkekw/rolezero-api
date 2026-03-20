@@ -34,6 +34,7 @@ class EventoAcaoControllerIT {
 
     @Test
     @DisplayName("Requisição s/ JWT Bearer deve ser Bloqueada logo no Filtro (HTTP 401)")
+    @SuppressWarnings("null")
     void deveNegarAcessoSemToken_Http401() throws Exception {
         String payload = criarPayloadEvento();
         
@@ -52,6 +53,7 @@ class EventoAcaoControllerIT {
 
     @Test
     @DisplayName("Host deve Conseguir Inserir Evento via JWT Autêntico (HTTP 201)")
+    @SuppressWarnings("null")
     void deveCriarEventoNoPostGIS_Autorizado() throws Exception {
         // Gerando um JWT nativo para o Profile de Test //
         UUID fakeUserUUID = UUID.randomUUID();
@@ -68,6 +70,7 @@ class EventoAcaoControllerIT {
 
     @Test
     @DisplayName("Bad Request (HTTP 400) se Enviar Capacidade Negativa")
+    @SuppressWarnings("null")
     void deveBloquearPayloadMalFormado_Http400() throws Exception {
         UUID fakeUserUUID = UUID.randomUUID();
         String jwtToken = jwtService.generateToken(fakeUserUUID);
@@ -92,11 +95,13 @@ class EventoAcaoControllerIT {
     // Builder nativo do Jackson
     private String criarPayloadEvento() throws Exception {
         CriarEventoRequest req = new CriarEventoRequest(
-            "Festinha na Testcontainers", 
-            25, 
-            42.3601, 
-            -71.0589, 
-            LocalDateTime.now().plusDays(2)
+            "Festinha na Testcontainers",
+            "Descrição do Evento de Teste",
+            25,
+            42.3601,
+            -71.0589,
+            LocalDateTime.now().plusDays(2),
+            java.util.List.of("TEST_TAG")
         );
         
         ObjectMapper mapper = new ObjectMapper();

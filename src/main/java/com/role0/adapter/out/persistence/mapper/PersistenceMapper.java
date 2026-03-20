@@ -33,6 +33,7 @@ public abstract class PersistenceMapper {
     @Mapping(target = "tags", source = "vibeTags")
     @Mapping(target = "provedIdentityToken", source = "biometriaValidada")
     @Mapping(target = "email", ignore = true)
+    @Mapping(target = "passwordHash", ignore = true)
     public abstract UsuarioJpaEntity toJpaEntity(Usuario dominio);
 
     @Mapping(target = "nomeDisplay", source = "nome")

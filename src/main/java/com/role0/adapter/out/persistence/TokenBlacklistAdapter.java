@@ -38,6 +38,7 @@ public class TokenBlacklistAdapter implements TokenBlacklistPort {
     }
 
     @NonNull
+    @SuppressWarnings("null")
     private String hashToken(@NonNull String token) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

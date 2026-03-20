@@ -30,6 +30,7 @@ class BuscarPerfilPublicoServiceTest {
     private BuscarPerfilPublicoService service;
 
     @Test
+    @SuppressWarnings("null")
     void deveRetornarPerfilPublico() {
         UUID userId = UUID.randomUUID();
         UsuarioPublicoResponse responseMock = new UsuarioPublicoResponse(
@@ -45,11 +46,13 @@ class BuscarPerfilPublicoServiceTest {
     }
 
     @Test
+    @SuppressWarnings("null")
     void deveLancarExcecaoQuandoNaoEncontrado() {
         UUID userId = UUID.randomUUID();
         when(queryPort.buscarPerfilPublico(userId)).thenReturn(Optional.empty());
 
-        assertThrows(UsuarioNaoEncontradoException.class, () -> service.executar(userId));
+        UsuarioNaoEncontradoException ex = assertThrows(UsuarioNaoEncontradoException.class, () -> service.executar(userId));
+        org.junit.jupiter.api.Assertions.assertNotNull(ex);
         verify(queryPort).buscarPerfilPublico(userId);
     }
 }

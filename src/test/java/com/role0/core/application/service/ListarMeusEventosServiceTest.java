@@ -29,6 +29,7 @@ class ListarMeusEventosServiceTest {
     private ListarMeusEventosService service;
 
     @Test
+    @SuppressWarnings("null")
     void deveMapearEventosCorretamenteParaHostEParticipante() {
         UUID myId = UUID.randomUUID();
         UUID otherId = UUID.randomUUID();
