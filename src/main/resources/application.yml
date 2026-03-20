@@ -1,13 +1,13 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
   tomcat:
     threads:
-      max: 200 # Fallback 
+      max: 200
 
 spring:
   application:
     name: role0-core-api
-  
+
   # Java 21 Virtual Threads para alta concorrência O(1)
   threads:
     virtual:
@@ -20,39 +20,48 @@ spring:
     password: ${DB_PASS}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 5 # Free tier Supabase maximo é ~15
+      maximum-pool-size: 5
       minimum-idle: 1
+      connection-timeout: 30000
+
   flyway:
     enabled: true
     baseline-on-migrate: true
     validate-on-migrate: false
     locations: classpath:db/migration
-  
+
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect # Hibernate 6 detecta o suporte espacial automaticamente se houver hibernate-spatial
+    # PostgreSQLDialect auto-detectado pelo Hibernate 6 — remover deprecation warning
     hibernate:
       ddl-auto: validate
+    open-in-view: false
     show-sql: false
 
-  # Cache (Redis)
+  # Cache (Redis opcional — se REDIS_URL não definida, usa in-memory via CacheConfig)
   data:
     redis:
-      host: localhost
-      port: 6379
+      url: "${REDIS_URL:}"
+      timeout: 2000ms
+      connect-timeout: 2000ms
+  cache:
+    type: "${CACHE_TYPE:redis}"
 
-  # Mensageria / EDA (RabbitMQ)
+  # Mensageria / EDA (RabbitMQ opcional)
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: "${RABBITMQ_HOST:localhost}"
+    port: "${RABBITMQ_PORT:5672}"
+    username: "${RABBITMQ_USER:guest}"
+    password: "${RABBITMQ_PASS:guest}"
 
 # Segurança Customizada
 app:
   security:
     jwt:
       secret: "${JWT_SECRET:3f8e589A!2e5B876aD*74A4b1c2D3e4F5g6h7i8j9K0}"
-      expiration-ms: 86400000 
+      expiration-ms: 86400000
   integrations:
     openweather:
       api-key: "${OPENWEATHER_API_KEY:dummy_key}"

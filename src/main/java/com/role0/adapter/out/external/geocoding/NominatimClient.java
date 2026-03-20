@@ -32,9 +32,13 @@ public class NominatimClient implements GeocodingServicePort {
     public NominatimClient(RestClient.Builder restClientBuilder,
                            @org.springframework.beans.factory.annotation.Value("${app.integrations.nominatim.base-url}") String baseUrl,
                            @org.springframework.beans.factory.annotation.Value("${app.integrations.nominatim.user-agent}") String userAgent) {
+        @SuppressWarnings("null")
+        String finalUrl = java.util.Objects.requireNonNull(baseUrl);
+        @SuppressWarnings("null")
+        String finalUserAgent = java.util.Objects.requireNonNull(userAgent);
         this.restClient = restClientBuilder
-                .baseUrl(baseUrl)
-                .defaultHeader("User-Agent", userAgent)
+                .baseUrl(finalUrl)
+                .defaultHeader("User-Agent", finalUserAgent)
                 .defaultHeader("Accept-Language", "pt")
                 .build();
     }

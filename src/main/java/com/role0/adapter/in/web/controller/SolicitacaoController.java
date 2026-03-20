@@ -93,7 +93,9 @@ public class SolicitacaoController {
             return ResponseEntity.status(401).build();
         }
         UUID hostId = (UUID) principal;
-        return ResponseEntity.ok(listarSolicitacoesUseCase.executar(id, hostId));
+        @SuppressWarnings("null")
+        var response = listarSolicitacoesUseCase.executar(id, hostId);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Listar Participantes Aprovados", description = "Retorna a lista de participantes com suas vibes. Acessível ao host e participantes aprovados.")
@@ -109,6 +111,8 @@ public class SolicitacaoController {
             return ResponseEntity.status(401).build();
         }
         UUID solicitanteId = (UUID) principal;
-        return ResponseEntity.ok(listarParticipantesUseCase.executar(id, solicitanteId));
+        @SuppressWarnings("null")
+        var response = listarParticipantesUseCase.executar(id, solicitanteId);
+        return ResponseEntity.ok(response);
     }
 }

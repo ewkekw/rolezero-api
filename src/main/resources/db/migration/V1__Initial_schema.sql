@@ -4,8 +4,9 @@
 -- Inclui: Schema, Tabelas de Domínio, Índices, Triggers e RLS.
 
 -- 1. Extensões e Schemas
-CREATE SCHEMA IF NOT EXISTS extensions;
-CREATE EXTENSION IF NOT EXISTS postgis;
+-- NOTA: PostGIS já é instalado pelo Supabase no schema 'extensions'.
+-- Tentativa de CREATE EXTENSION causa erro no PgBouncer/Render.
+-- Tabelas abaixo usam tipos PostGIS (GEOMETRY) que já estão disponíveis via search_path.
 
 -- 2. Tabela de Usuários (Agregação de Identidade e Autenticidade)
 CREATE TABLE IF NOT EXISTS role_usuario (

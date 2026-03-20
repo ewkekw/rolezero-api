@@ -69,6 +69,7 @@ public class UsuarioReputacaoController {
         if (!(principal instanceof UUID)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+        @SuppressWarnings("null")
         UUID avaliadorId = (UUID) principal;
         avaliarUsuarioUseCase.executar(avaliadorId, userId, payload);
         return ResponseEntity.status(HttpStatus.CREATED).build();

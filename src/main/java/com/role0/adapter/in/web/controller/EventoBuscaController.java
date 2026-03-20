@@ -111,6 +111,8 @@ public class EventoBuscaController {
             return ResponseEntity.status(401).build();
         }
         UUID solicitanteId = (UUID) principal;
-        return ResponseEntity.ok(buscarHistoricoChatUseCase.executar(eventId, solicitanteId, limit));
+        @SuppressWarnings("null")
+        var response = buscarHistoricoChatUseCase.executar(eventId, solicitanteId, limit);
+        return ResponseEntity.ok(response);
     }
 }

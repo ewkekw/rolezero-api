@@ -1,24 +1,41 @@
-# script de Infraestrutura como Código (IaC) para deploy automático na Render.com
+# Infraestrutura como Código (IaC) para deploy automático no Render.com
+# Documentação: https://render.com/docs/render-yaml-reference
 services:
   - type: web
     name: rolezero-backend-core
     env: docker
-    region: ohio # ou oregon, frankfurt, singapore
-    plan: free # Custo Zero (512MB RAM)
-    dockerCommand: "" # Em branco pois o entrypoint já está no Dockerfile
-    
-    # As variáveis abaixo podem ser sobrescritas no painel da Render, 
-    # mas declaramos aqui o corpo básico obrigatório.
+    dockerfilePath: ./Dockerfile
+    region: ohio
+    plan: free
+    healthCheckPath: /actuator/health
+
     envVars:
-      # Definimos ativamente para rodar o "application-dev.yml" só para pegar 
-      # a string de mock do supabase, OU o devops setar 'prod' e injetar a string correta na AWS
       - key: SPRING_PROFILES_ACTIVE
-        value: dev
-        
-      # Esta variável força a Render a injetar a Porta Web Externa que eles alocam dinamicamente pro contêiner
-      - key: SERVER_PORT
-        value: 8080
-      
-      # Força a máquina Java a economizar memória num ambiente contâinerizado free de 512mb
+        value: prod
+
+      # Banco de Dados (Supabase) — preencher no Dashboard do Render
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_NAME
+        value: postgres
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+
+      # Segurança JWT — preencher no Dashboard do Render (mín. 32 chars)
+      - key: JWT_SECRET
+        sync: false
+
+      # Integrações externas — preencher no Dashboard do Render
+      - key: OPENWEATHER_API_KEY
+        sync: false
+
+      # REDIS_URL: não definir = cache in-memory automático
+      # Para ativar Redis, adicione um Render Redis Add-on e defina REDIS_URL
+
+      # Otimização de memória para o free tier (512MB RAM)
       - key: JAVA_TOOL_OPTIONS
         value: "-XX:MaxRAMPercentage=75.0 -XX:+UseSerialGC -Xss512k"
