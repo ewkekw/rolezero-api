@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.role0.adapter.in.web.dto.response.UsuarioPerfilResponse;
 import com.role0.adapter.in.web.dto.response.UsuarioPublicoResponse;
@@ -28,6 +29,7 @@ public class BuscarPerfilUsuarioQueryAdapter implements BuscarPerfilUsuarioQuery
     }
 
     @Override
+    @Transactional(readOnly = true)
     @SuppressWarnings("null")
     public Optional<UsuarioPerfilResponse> buscarPerfil(UUID id) {
         Optional<UsuarioJpaEntity> usuarioOpt = usuarioRepository.findById(id);
@@ -54,6 +56,7 @@ public class BuscarPerfilUsuarioQueryAdapter implements BuscarPerfilUsuarioQuery
     }
 
     @Override
+    @Transactional(readOnly = true)
     @SuppressWarnings("null")
     public Optional<UsuarioPublicoResponse> buscarPerfilPublico(@NonNull UUID id) {
         Optional<UsuarioJpaEntity> usuarioOpt = usuarioRepository.findById(id);

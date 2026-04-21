@@ -34,7 +34,7 @@ class AtualizarPerfilServiceTest {
 
         when(usuarioRepository.buscarPorId(id)).thenReturn(Optional.of(usuario));
 
-        atualizarPerfilService.executar(id, "Novo Nome Trimb");
+        atualizarPerfilService.executar(id, "Novo Nome Trimb", null);
 
         assertEquals("Novo Nome Trimb", usuario.getNomeDisplay());
         verify(usuarioRepository).salvar(usuario);
@@ -48,7 +48,7 @@ class AtualizarPerfilServiceTest {
         when(usuarioRepository.buscarPorId(id)).thenReturn(Optional.of(usuario));
 
         UsuarioDomainException ex = assertThrows(UsuarioDomainException.class, () -> {
-            atualizarPerfilService.executar(id, "   ");
+            atualizarPerfilService.executar(id, "   ", null);
         });
         org.junit.jupiter.api.Assertions.assertNotNull(ex);
     }
@@ -60,7 +60,7 @@ class AtualizarPerfilServiceTest {
         when(usuarioRepository.buscarPorId(id)).thenReturn(Optional.empty());
 
         UsuarioDomainException ex = assertThrows(UsuarioDomainException.class, () -> {
-            atualizarPerfilService.executar(id, "Valido");
+            atualizarPerfilService.executar(id, "Valido", null);
         });
         org.junit.jupiter.api.Assertions.assertNotNull(ex);
     }

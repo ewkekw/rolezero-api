@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.role0.adapter.in.web.dto.response.ParticipanteResumoResponse;
 import com.role0.adapter.out.persistence.entity.UsuarioJpaEntity;
@@ -35,6 +36,7 @@ public class ListarParticipantesEventoService implements ListarParticipantesEven
     }
 
     @Override
+    @Transactional(readOnly = true)
     @SuppressWarnings("null")
     public List<ParticipanteResumoResponse> executar(@NonNull UUID eventoId, @NonNull UUID solicitanteId) {
         Evento evento = eventoRepository.buscarPorId(eventoId)

@@ -47,6 +47,10 @@ public class Usuario {
         return Collections.unmodifiableSet(this.vibeTags);
     }
 
+    public void setVibeTags(Set<VibeTag> vibeTags) {
+        this.vibeTags = vibeTags != null ? new HashSet<>(vibeTags) : new HashSet<>();
+    }
+
     public void validarBiometria(String tokenFornecedorIdV) {
         if (tokenFornecedorIdV == null || tokenFornecedorIdV.isBlank()) {
             throw new UsuarioDomainException("Token biométrico inválido.");

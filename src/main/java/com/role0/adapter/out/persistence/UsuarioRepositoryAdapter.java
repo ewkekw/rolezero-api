@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 // import com.role0.adapter.out.persistence.repository.SpringDataUsuarioRepository;
 import com.role0.core.application.port.out.UsuarioRepositoryPort;
@@ -14,6 +15,7 @@ import com.role0.adapter.out.persistence.mapper.PersistenceMapper;
 import com.role0.adapter.out.persistence.repository.SpringDataUsuarioRepository;
 
 @Component
+@Transactional(readOnly = true)
 public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
 
     private final SpringDataUsuarioRepository repository;
@@ -25,9 +27,17 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
     }
 
     @Override
+    @Transactional
     @SuppressWarnings("null")
     public Usuario salvar(Usuario usuario) {
-        UsuarioJpaEntity entity = mapper.toJpaEntity(usuario);
+        UsuarioJpaEntity entity = repository.findById(usuario.getId())
+                .orElse(new com.role0.adapter.out.persistence.entity.UsuarioJpaEntity());
+        entity.setId(usuario.getId());
+        entity.setNome(usuario.getNomeDisplay());
+        entity.setProvedIdentityToken(usuario.isBiometriaValidada());
+        entity.setTags(usuario.getVibeTags() != null
+                ? new java.util.ArrayList<>(usuario.getVibeTags())
+                : new java.util.ArrayList<>());
         UsuarioJpaEntity saved = repository.save(entity);
         return mapper.toDomain(saved);
     }

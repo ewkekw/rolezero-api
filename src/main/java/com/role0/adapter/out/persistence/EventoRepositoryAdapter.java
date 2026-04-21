@@ -14,6 +14,7 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.role0.adapter.out.persistence.entity.EventoJpaEntity;
 import com.role0.adapter.out.persistence.mapper.PersistenceMapper;
@@ -22,6 +23,7 @@ import com.role0.core.application.port.out.EventoRepositoryPort;
 import com.role0.core.domain.evento.entity.Evento;
 
 @Component
+@Transactional(readOnly = true)
 public class EventoRepositoryAdapter implements EventoRepositoryPort {
 
     private final SpringDataEventoRepository repository;
@@ -35,6 +37,7 @@ public class EventoRepositoryAdapter implements EventoRepositoryPort {
     }
 
     @Override
+    @Transactional
     @CacheEvict(value = "eventosCache", allEntries = true)
     @SuppressWarnings("null")
     public Evento salvar(Evento evento) {

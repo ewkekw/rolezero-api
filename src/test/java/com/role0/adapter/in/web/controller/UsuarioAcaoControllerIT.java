@@ -37,9 +37,9 @@ class UsuarioAcaoControllerIT {
     @SuppressWarnings("null")
     void deveAtualizarPerfilEGanhar204() throws Exception {
         UUID expectedId = UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6");
-        AtualizarPerfilRequest req = new AtualizarPerfilRequest("Novo Display Name");
+        AtualizarPerfilRequest req = new AtualizarPerfilRequest("Novo Display Name", null);
 
-        doNothing().when(atualizarPerfilUseCase).executar(expectedId, "Novo Display Name");
+        doNothing().when(atualizarPerfilUseCase).executar(expectedId, "Novo Display Name", null);
 
         mockMvc.perform(patch("/api/v1/users/me")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -51,7 +51,7 @@ class UsuarioAcaoControllerIT {
     @WithMockUser(username = "3fa85f64-5717-4562-b3fc-2c963f66afa6", roles = "USER")
     @SuppressWarnings("null")
     void deveRecusarQuandoNomeVazio() throws Exception {
-        AtualizarPerfilRequest req = new AtualizarPerfilRequest("  ");
+        AtualizarPerfilRequest req = new AtualizarPerfilRequest("  ", null);
 
         mockMvc.perform(patch("/api/v1/users/me")
                 .contentType(MediaType.APPLICATION_JSON)

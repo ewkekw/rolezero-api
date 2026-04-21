@@ -55,8 +55,8 @@ public class SolicitacaoController {
     @PostMapping("/{id}/join-requests")
     public ResponseEntity<Void> intençaoParticipar(
             @Parameter(description = "UUID do Evento Alvo", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6") @PathVariable UUID id) {
-        UUID guestMockId = UUID.randomUUID();
-        solicitarParticipacaoUseCase.executar(id, guestMockId);
+        UUID guestId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        solicitarParticipacaoUseCase.executar(id, guestId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -66,10 +66,7 @@ public class SolicitacaoController {
             @Parameter(description = "UUID do Evento sendo moderado", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6") @PathVariable UUID id, 
             @Parameter(description = "UUID da Request efetuada pelo participante", example = "123e4567-e89b-12d3-a456-426614174000") @PathVariable UUID reqId,
             @Valid @RequestBody JulgarSolicitacaoRequest payload) {
-        // Extrai o ID do Host do Token JWT validado no SecurityContext
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        java.util.Objects.requireNonNull(principal, "Principal não pode ser nulo");
-        UUID hostIdAutenticado = UUID.fromString(principal);
+        UUID hostIdAutenticado = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (Boolean.TRUE.equals(payload.aprovada())) {
             processarSolicitacaoUseCase.aprovar(id, hostIdAutenticado, reqId);

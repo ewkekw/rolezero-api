@@ -46,6 +46,8 @@ public class CriarEventoService implements CriarEventoUseCase {
         Evento evento = new Evento(UUID.randomUUID(), host.getId(), titulo, capacidadeMaxima, localizacao,
                 horarioInicio);
 
+        evento.setStatus(com.role0.core.domain.evento.valueobject.StatusEvento.ABERTO_PARA_VAGAS);
+
         // Host é automaticamente o primeiro aprovado no seu próprio evento
         evento.aprovarParticipante(host.getId());
 

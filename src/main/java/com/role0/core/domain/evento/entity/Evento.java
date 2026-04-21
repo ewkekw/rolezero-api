@@ -136,6 +136,13 @@ public class Evento {
         return Collections.unmodifiableList(participantesAprovados);
     }
 
+    public void setParticipantesAprovados(List<UUID> ids) {
+        this.participantesAprovados.clear();
+        if (ids != null) {
+            this.participantesAprovados.addAll(ids);
+        }
+    }
+
     public CoordenadaGeografica getLocalizacao() {
         return localizacao;
     }

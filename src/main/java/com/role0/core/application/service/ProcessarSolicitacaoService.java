@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.role0.adapter.out.persistence.entity.SolicitacaoParticipacaoJpaEntity;
+import com.role0.adapter.out.persistence.repository.SpringDataSolicitacaoRepository;
 import com.role0.core.application.port.out.ChatNotificationPort;
 import com.role0.core.application.port.out.EventoRepositoryPort;
 import com.role0.core.application.port.out.UsuarioRepositoryPort;
@@ -13,9 +15,11 @@ import com.role0.core.domain.evento.entity.Evento;
 import com.role0.core.domain.evento.exception.EventoDomainException;
 import com.role0.core.domain.evento.service.GatilhoSocialService;
 import com.role0.core.domain.evento.valueobject.StatusEvento;
+import com.role0.core.domain.evento.valueobject.StatusSolicitacao;
 import com.role0.core.domain.usuario.entity.Usuario;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProcessarSolicitacaoService implements ProcessarSolicitacaoUseCase {
@@ -25,22 +29,31 @@ public class ProcessarSolicitacaoService implements ProcessarSolicitacaoUseCase 
     private final ChatNotificationPort chatNotification;
     private final MessageBrokerEventPort messageBroker;
     private final GatilhoSocialService gatilhoSocialService;
+    private final SpringDataSolicitacaoRepository solicitacaoRepository;
 
     public ProcessarSolicitacaoService(
             EventoRepositoryPort eventoRepository,
             UsuarioRepositoryPort usuarioRepository,
             ChatNotificationPort chatNotification,
             MessageBrokerEventPort messageBroker,
-            GatilhoSocialService gatilhoSocialService) {
+            GatilhoSocialService gatilhoSocialService,
+            SpringDataSolicitacaoRepository solicitacaoRepository) {
         this.eventoRepository = eventoRepository;
         this.usuarioRepository = usuarioRepository;
         this.chatNotification = chatNotification;
         this.messageBroker = messageBroker;
         this.gatilhoSocialService = gatilhoSocialService;
+        this.solicitacaoRepository = solicitacaoRepository;
     }
 
     @Override
-    public void aprovar(UUID eventoId, UUID hostId, UUID participanteId) {
+    @Transactional
+    public void aprovar(UUID eventoId, UUID hostId, UUID solicitacaoId) {
+        SolicitacaoParticipacaoJpaEntity solicitacao = solicitacaoRepository.findById(solicitacaoId)
+            .orElseThrow(() -> new EventoDomainException("Solicitação não encontrada"));
+
+        UUID participanteId = solicitacao.getUsuarioId();
+
         Evento evento = eventoRepository.buscarPorId(eventoId)
             .orElseThrow(() -> new EventoDomainException("Evento inexistente"));
 
@@ -48,13 +61,14 @@ public class ProcessarSolicitacaoService implements ProcessarSolicitacaoUseCase 
             throw new EventoDomainException("Apenas o anfitrião (host) pode aprovar solicitações.");
         }
 
-        // Tenta aprovar usando as invariantes estritas do Domínio Raiz (Valida limite de Vagas)
         evento.aprovarParticipante(participanteId);
         eventoRepository.salvar(evento);
 
+        solicitacao.setStatus(StatusSolicitacao.APROVADA);
+        solicitacaoRepository.save(solicitacao);
+
         chatNotification.notificarNovoParticipante(eventoId, participanteId);
 
-        // Se após a aprovação a vaga esgotou, o grupo está fechado! Dispara o gatilho ice-breaker e agenda encerramento
         if (evento.getStatus() == StatusEvento.FECHADO_PREGAME) {
             tratarRotinaGrupoFechado(evento);
         }

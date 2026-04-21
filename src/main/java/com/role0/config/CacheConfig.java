@@ -40,6 +40,7 @@ public class CacheConfig {
     public CacheManager inMemoryCacheManager() {
         ConcurrentMapCacheManager manager = new ConcurrentMapCacheManager();
         manager.setCacheNames(Arrays.asList(
+            "eventosCache",
             "eventosProximos",
             "weatherCache",
             "perfilUsuario",

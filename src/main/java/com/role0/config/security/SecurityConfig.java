@@ -46,6 +46,8 @@ public class SecurityConfig {
                     "/actuator/**"
                 ).permitAll() // Libera Swagger UI, Actuator e endpoints públicos de auth
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/events/**").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/users/{userId}").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/users/{userId}/reviews").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
