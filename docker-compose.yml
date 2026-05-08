@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Supabase Simulador / Banco Relacional Geoespacial
+  role0-postgis:
+    image: postgis/postgis:15-3.3
+    container_name: role0-postgis
+    environment:
+      POSTGRES_USER: role0_admin
+      POSTGRES_PASSWORD: role0_password
+      POSTGRES_DB: role0
+    ports:
+      - "5432:5432"
+    volumes:
+      - role0-db-data:/var/lib/postgresql/data
+    restart: always
+
+  # Redis para Mapeamento em Cache (Consultas "O Mapa")
+  role0-redis:
+    image: redis:7-alpine
+    container_name: role0-redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  # Broker de Mensagens para Deleção e Encerramento de Eventos (Event-Driven Arch.)
+  role0-rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: role0-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: role0
+      RABBITMQ_DEFAULT_PASS: role0q
+    ports:
+      - "5672:5672" # Porta para os Publishers e Consumers
+      - "15672:15672" # Porta para o Painel de Administração Visual
+    restart: always
+
+volumes:
+  role0-db-data:
+    driver: local

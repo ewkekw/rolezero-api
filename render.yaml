@@ -1,0 +1,41 @@
+# Infraestrutura como Código (IaC) para deploy automático no Render.com
+# Documentação: https://render.com/docs/render-yaml-reference
+services:
+  - type: web
+    name: rolezero-backend-core
+    env: docker
+    dockerfilePath: ./Dockerfile
+    region: ohio
+    plan: free
+    healthCheckPath: /actuator/health
+
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+
+      # Banco de Dados (Supabase) — preencher no Dashboard do Render
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_NAME
+        value: postgres
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+
+      # Segurança JWT — preencher no Dashboard do Render (mín. 32 chars)
+      - key: JWT_SECRET
+        sync: false
+
+      # Integrações externas — preencher no Dashboard do Render
+      - key: OPENWEATHER_API_KEY
+        sync: false
+
+      # REDIS_URL: não definir = cache in-memory automático
+      # Para ativar Redis, adicione um Render Redis Add-on e defina REDIS_URL
+
+      # Otimização de memória para o free tier (512MB RAM)
+      - key: JAVA_TOOL_OPTIONS
+        value: "-XX:MaxRAMPercentage=75.0 -XX:+UseSerialGC -Xss512k"
