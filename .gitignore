@@ -4,6 +4,8 @@ docs/
 target/
 .idea/
 *.iml
+.agents/
+.graphify-out/*
 
 # Autenticação e Credenciais Locais
 .env
@@ -16,3 +18,5 @@ application-dev.yml
 TestPg.*
 apache-maven-*/
 server_run.log
+
+graphify-out/
