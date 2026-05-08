@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
         contact = @Contact(name = "Equipe de Engenharia Role-Zero")
     ),
     servers = {
+        @Server(url = "https://rolezero-backend-core.onrender.com", description = "Ambiente de Produção (Render)"),
         @Server(url = "http://localhost:8080", description = "Ambiente Local (Desenvolvimento)")
     },
     security = {
